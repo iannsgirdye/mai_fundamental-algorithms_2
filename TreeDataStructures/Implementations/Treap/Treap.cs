@@ -36,7 +36,19 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
     /// </summary>
     protected virtual TreapNode<TKey, TValue>? Merge(TreapNode<TKey, TValue>? left, TreapNode<TKey, TValue>? right)
     {
-        throw new NotImplementedException("Implement Merge operation");
+        if (left == null || right == null) {
+            return left ?? right;
+        }
+        if (left.Priority >= right.Priority) {
+            left.Right = Merge(left.Right, right);
+            left.Right?.Parent = left;
+            return left;
+        }
+        else {
+            right.Left = Merge(left, right.Left);
+            right.Left?.Parent = right;
+            return right;
+        }
     }
     
 
