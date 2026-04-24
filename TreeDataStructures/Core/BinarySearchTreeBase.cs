@@ -248,12 +248,12 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     public IEnumerable<TreeEntry<TKey, TValue>>  InOrderReverse() => throw new NotImplementedException();
     public IEnumerable<TreeEntry<TKey, TValue>>  PreOrderReverse() => throw new NotImplementedException();
     public IEnumerable<TreeEntry<TKey, TValue>>  PostOrderReverse() => throw new NotImplementedException();
-    
+
     /// <summary>
     /// Внутренний класс-итератор. 
     /// Реализует паттерн Iterator вручную, без yield return (ban).
     /// </summary>
-    private struct TreeIterator : 
+    private struct TreeIterator :
         IEnumerable<TreeEntry<TKey, TValue>>,
         IEnumerator<TreeEntry<TKey, TValue>>
     {
@@ -352,116 +352,116 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
                     break;
             }
         }
-    }
 
-    private void PushLeftChain(TNode? node, int depth)
-    {
-        while (node != null)
+        private void PushLeftChain(TNode? node, int depth)
         {
-            _stack!.Push((node, depth));
-            node = node.Left;
-            depth++;
-        }
-    }
-
-    private void PushRightChain(TNode? node, int depth)
-    {
-        while (node != null)
-        {
-            _stack!.Push((node, depth));
-            node = node.Right;
-            depth++;
-        }
-    }
-
-    private bool MoveNextInOrder()
-    {
-        if (_stack!.Count == 0) { return false };
-        var (node, depth) = _stack.Pop();
-        _current = node;
-        _currentDepth = depth;
-        PushLeftChain(node.Right, depth + 1);
-        return true;
-    }
-
-    private bool MoveNextInOrderReverse()
-    {
-        if (_stack!.Count == 0) { return false };
-        var (node, depth) = _stack.Pop();
-        _current = node;
-        _currentDepth = depth;
-        PushRightChain(node.Left, depth + 1);
-        return true;
-    }
-
-    private bool MoveNextPreOrder()
-    {
-        if (_stack!.Count == 0) { return false };
-        var (node, depth) = _stack.Pop();
-        _current = node;
-        _currentDepth = depth;
-        if (node.Right != null) { _stack.Push((node.Right, depth + 1)); }
-        if (node.Left != null) { _stack.Push((node.Left, depth + 1)); }
-        return true;
-    }
-
-    private bool MoveNextPreOrderReverse()
-    {
-        if (_stack!.Count == 0) { return false };
-        var (node, depth) = _stack.Pop();
-        _current = node;
-        _currentDepth = depth;
-        if (node.Left != null) { _stack.Push((node.Left, depth + 1)); }
-        if (node.Right != null) { _stack.Push((node.Right, depth + 1)); }
-        return true;
-    }
-
-    private bool MoveNextPostOrder()
-    {
-        while (_stack!.Count > 0)
-        {
-            var (node, depth) = _stack.Peek();
-            if (node.Left != null && _prev != node.Left && _prev != node.Right)
+            while (node != null)
             {
-                _stack.Push((node.Left, depth + 1));
-            }
-            else if (node.Right != null && _prev != node.Right)
-            {
-                _stack.Push((node.Right, depth + 1));
-            }
-            else
-            {
-                _current = node;
-                _currentDepth = depth;
-                _prev = _stack.Pop().node;
-                return true;
+                _stack!.Push((node, depth));
+                node = node.Left;
+                depth++;
             }
         }
-        return false;
-    }
 
-    private bool MoveNextPostOrderReverse()
-    {
-        while (_stack!.Count > 0)
+        private void PushRightChain(TNode? node, int depth)
         {
-            var (node, depth) = _stack.Peek();
-            if (node.Right != null && _prev != node.Right && _prev != node.Left)
+            while (node != null)
             {
-                _stack.Push((node.Right, depth + 1));
-            }
-            else if (node.Left != null && _prev != node.Left)
-            {
-                _stack.Push((node.Left, depth + 1));
-            }
-            else
-            {
-                _current = node;
-                _currentDepth = depth;
-                _prev = _stack.Pop().node;
-                return true;
+                _stack!.Push((node, depth));
+                node = node.Right;
+                depth++;
             }
         }
-        return false;
+
+        private bool MoveNextInOrder()
+        {
+            if (_stack!.Count == 0) { return false };
+            var (node, depth) = _stack.Pop();
+            _current = node;
+            _currentDepth = depth;
+            PushLeftChain(node.Right, depth + 1);
+            return true;
+        }
+
+        private bool MoveNextInOrderReverse()
+        {
+            if (_stack!.Count == 0) { return false };
+            var (node, depth) = _stack.Pop();
+            _current = node;
+            _currentDepth = depth;
+            PushRightChain(node.Left, depth + 1);
+            return true;
+        }
+
+        private bool MoveNextPreOrder()
+        {
+            if (_stack!.Count == 0) { return false };
+            var (node, depth) = _stack.Pop();
+            _current = node;
+            _currentDepth = depth;
+            if (node.Right != null) { _stack.Push((node.Right, depth + 1)); }
+            if (node.Left != null) { _stack.Push((node.Left, depth + 1)); }
+            return true;
+        }
+
+        private bool MoveNextPreOrderReverse()
+        {
+            if (_stack!.Count == 0) { return false };
+            var (node, depth) = _stack.Pop();
+            _current = node;
+            _currentDepth = depth;
+            if (node.Left != null) { _stack.Push((node.Left, depth + 1)); }
+            if (node.Right != null) { _stack.Push((node.Right, depth + 1)); }
+            return true;
+        }
+
+        private bool MoveNextPostOrder()
+        {
+            while (_stack!.Count > 0)
+            {
+                var (node, depth) = _stack.Peek();
+                if (node.Left != null && _prev != node.Left && _prev != node.Right)
+                {
+                    _stack.Push((node.Left, depth + 1));
+                }
+                else if (node.Right != null && _prev != node.Right)
+                {
+                    _stack.Push((node.Right, depth + 1));
+                }
+                else
+                {
+                    _current = node;
+                    _currentDepth = depth;
+                    _prev = _stack.Pop().node;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool MoveNextPostOrderReverse()
+        {
+            while (_stack!.Count > 0)
+            {
+                var (node, depth) = _stack.Peek();
+                if (node.Right != null && _prev != node.Right && _prev != node.Left)
+                {
+                    _stack.Push((node.Right, depth + 1));
+                }
+                else if (node.Left != null && _prev != node.Left)
+                {
+                    _stack.Push((node.Left, depth + 1));
+                }
+                else
+                {
+                    _current = node;
+                    _currentDepth = depth;
+                    _prev = _stack.Pop().node;
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     private enum TraversalStrategy { InOrder, PreOrder, PostOrder, InOrderReverse, PreOrderReverse, PostOrderReverse }
