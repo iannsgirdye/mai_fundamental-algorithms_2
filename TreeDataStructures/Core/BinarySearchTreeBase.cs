@@ -364,6 +364,16 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         }
     }
 
+    private void PushRightChain(TNode? node, int depth)
+    {
+        while (node != null)
+        {
+            _stack!.Push((node, depth));
+            node = node.Right;
+            depth++;
+        }
+    }
+
 
     private enum TraversalStrategy { InOrder, PreOrder, PostOrder, InOrderReverse, PreOrderReverse, PostOrderReverse }
     
