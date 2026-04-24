@@ -21,8 +21,41 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     
     public virtual void Add(TKey key, TValue value)
     {
-        throw new NotImplementedException(
-            "Implement standard BST add logic using <CreateNode(key, value)> and OnNodeAdded(newNode)");
+        TNode newNode = CreateNode(key, value);
+        if (Root == null)
+        {
+            Root = newNode;
+            Count++;
+            OnNodeAdded(newNode);
+            return;
+        }
+
+        TNode current = Root;
+        TNode? parent = null;
+        int cmp;
+        while (current != null)
+        {
+            cmp = Comparer.Compare(key, current.key);
+            if (cmp == 0)
+            {
+                current.Value = value;
+                return;
+            }
+            parent = current;
+            current = cmp < 0 ? current.Left : current.Right;
+        }
+
+        if (cmp < 0)
+        {
+            parent.Left = newNode;
+        } 
+        else
+        {
+            parent.Right = newNode;
+        }
+        newNode.Parent = parent;
+        Count++;
+        OnNodeAdded();
     }
 
     
