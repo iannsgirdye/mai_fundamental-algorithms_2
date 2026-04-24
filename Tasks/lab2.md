@@ -51,7 +51,7 @@
 
 ---
 
-### 2: Умножение «в столбик» (Simple Multiplication)
+### 2. Умножение «в столбик» (Simple Multiplication)
 
 **Путь в репозитории:**  `Arithmetic/BigInt/MultiplyStrategy`
 
@@ -62,7 +62,7 @@
 
 ---
 
-### Задача 2: Умножение методом Карацубы (Karatsuba Multiplication)
+### 3. Умножение методом Карацубы (Karatsuba Multiplication)
 **Путь в репозитории:**  `Arithmetic/BigInt/MultiplyStrategy`
 
 Реализуйте класс `KaratsubaMultiplier`, реализующий интерфейс `IMultiplier`.
@@ -72,7 +72,7 @@
 
 ---
 
-### Задача 3: Умножение Шёнхаге — Штрассена (FFT Multiplication)
+### 4. Умножение Шёнхаге — Штрассена (FFT Multiplication)
 **Путь в репозитории:**  `Arithmetic/BigInt/MultiplyStrategy`
 
 Реализуйте класс `FftMultiplier`, реализующий интерфейс `IMultiplier`.
