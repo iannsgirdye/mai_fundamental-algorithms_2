@@ -309,16 +309,18 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
                 InitStart();
                 _started = true;
             }
-
-            switch (_strategy)
+            else
             {
-                case TraversalStrategy.InOrder: return MoveNextInOrder();
-                case TraversalStrategy.PreOrder: return MoveNextPreOrder();
-                case TraversalStrategy.PostOrder: return MoveNextPostOrder();
-                case TraversalStrategy.InOrderReverse: return MoveNextInOrderReverse();
-                case TraversalStrategy.PreOrderReverse: return MoveNextPreOrderReverse();
-                case TraversalStrategy.PostOrderReverse: return MoveNextPostOrderReverse();
-                default: return false;
+                switch (_strategy)
+                {
+                    case TraversalStrategy.InOrder: return MoveNextInOrder();
+                    case TraversalStrategy.PreOrder: return MoveNextPreOrder();
+                    case TraversalStrategy.PostOrder: return MoveNextPostOrder();
+                    case TraversalStrategy.InOrderReverse: return MoveNextInOrderReverse();
+                    case TraversalStrategy.PreOrderReverse: return MoveNextPreOrderReverse();
+                    case TraversalStrategy.PostOrderReverse: return MoveNextPostOrderReverse();
+                    default: return false;
+                }
             }
         }
 
