@@ -308,6 +308,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
                 if (_root == null) { return false; }
                 InitStart();
                 _started = true;
+                return true;
             }
             else
             {
