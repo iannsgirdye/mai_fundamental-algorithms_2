@@ -390,7 +390,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         private bool MoveNextInOrder()
         {
-            if (_stack!.Count == 0) { return false };
+            if (_stack!.Count == 0) { return false; }
             var (node, depth) = _stack.Pop();
             _current = node;
             _currentDepth = depth;
@@ -400,7 +400,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         private bool MoveNextInOrderReverse()
         {
-            if (_stack!.Count == 0) { return false };
+            if (_stack!.Count == 0) { return false; }
             var (node, depth) = _stack.Pop();
             _current = node;
             _currentDepth = depth;
@@ -410,7 +410,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         private bool MoveNextPreOrder()
         {
-            if (_stack!.Count == 0) { return false };
+            if (_stack!.Count == 0) { return false; }
             var (node, depth) = _stack.Pop();
             _current = node;
             _currentDepth = depth;
@@ -421,7 +421,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         private bool MoveNextPreOrderReverse()
         {
-            if (_stack!.Count == 0) { return false };
+            if (_stack!.Count == 0) { return false; }
             var (node, depth) = _stack.Pop();
             _current = node;
             _currentDepth = depth;
