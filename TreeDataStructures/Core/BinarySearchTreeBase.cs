@@ -1,10 +1,12 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography.X509Certificates;
 using TreeDataStructures.Interfaces;
 
 namespace TreeDataStructures.Core;
 
-public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>? comparer = null) 
+public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>? comparer = null)
     : ITree<TKey, TValue>
     where TNode : Node<TKey, TValue, TNode>
 {
@@ -12,13 +14,13 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     public IComparer<TKey> Comparer { get; protected set; } = comparer ?? Comparer<TKey>.Default; // use it to compare Keys
 
     public int Count { get; protected set; }
-    
+
     public bool IsReadOnly => false;
 
     public ICollection<TKey> Keys => throw new NotImplementedException();
     public ICollection<TValue> Values => throw new NotImplementedException();
-    
-    
+
+
     public virtual void Add(TKey key, TValue value)
     {
         TNode newNode = CreateNode(key, value);
@@ -48,7 +50,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         if (cmp < 0)
         {
             parent.Left = newNode;
-        } 
+        }
         else
         {
             parent.Right = newNode;
@@ -58,7 +60,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         OnNodeAdded(newNode);
     }
 
-    
+
     public virtual bool Remove(TKey key)
     {
         TNode? node = FindNode(key);
@@ -68,8 +70,8 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         this.Count--;
         return true;
     }
-    
-    
+
+
     protected virtual void RemoveNode(TNode node)
     {
         TNode deleteNode = node;
@@ -90,7 +92,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     }
 
     public virtual bool ContainsKey(TKey key) => FindNode(key) != null;
-    
+
     public virtual bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
     {
         TNode? node = FindNode(key);
@@ -109,29 +111,29 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         set => Add(key, value);
     }
 
-    
+
     #region Hooks
-    
+
     /// <summary>
     /// Вызывается после успешной вставки
     /// </summary>
     /// <param name="newNode">Узел, который встал на место</param>
     protected virtual void OnNodeAdded(TNode newNode) { }
-    
+
     /// <summary>
     /// Вызывается после удаления. 
     /// </summary>
     /// <param name="parent">Узел, чей ребенок изменился</param>
     /// <param name="child">Узел, который встал на место удаленного</param>
     protected virtual void OnNodeRemoved(TNode? parent, TNode? child) { }
-    
+
     #endregion
-    
-    
+
+
     #region Helpers
     protected abstract TNode CreateNode(TKey key, TValue value);
-    
-    
+
+
     protected TNode? FindNode(TKey key)
     {
         TNode? current = Root;
@@ -153,14 +155,29 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
     protected void RotateLeft(TNode x)
     {
-        throw new NotImplementedException();
+        if (x == null || x.Right == null) { return; }
+        TNode child = x.Right;
+        TNode parent = x.Parent;
+
+        x.Right = child.Left;
+        if (x.Right != null) { x.Right.Parent = x; }
+
+        child.Left = x;
+        x.Parent = child;
+
+        if (parent == null) { Root = child; }
+        else {
+            if (x.IsLeftChild) { parent.Left = child; }
+            else { parent.Right = child; }
+        }
+        child.Parent = parent;
     }
 
     protected void RotateRight(TNode y)
     {
         throw new NotImplementedException();
     }
-    
+
     protected void RotateBigLeft(TNode x)
     {
         throw new NotImplementedException();
