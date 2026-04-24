@@ -468,7 +468,8 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
-        throw new NotImplementedException();
+        foreach (var entry in InOrder())
+            yield return new KeyValuePair<TKey, TValue>(entry.Key, entry.Value);
     }
     
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
