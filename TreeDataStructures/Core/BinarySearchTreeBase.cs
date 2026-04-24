@@ -323,7 +323,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         public void Dispose()
         {
-            // TODO release managed resources here
+            _stack = null;
         }
     }
     
