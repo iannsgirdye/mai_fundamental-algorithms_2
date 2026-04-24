@@ -180,7 +180,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         TNode parent = y.Parent;
 
         y.Left = child.Right;
-        if (y.Left != null) { y.Left.Parent = y }
+        if (y.Left != null) { y.Left.Parent = y; }
 
         child.Right = y;
         y.Parent = child;
