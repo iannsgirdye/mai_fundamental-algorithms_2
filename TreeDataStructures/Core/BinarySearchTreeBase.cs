@@ -313,10 +313,14 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            _stack?.Clear();
+            _current = null;
+            _currentDepth = -1;
+            _prev = null;
+            _initialized = false;
         }
 
-        
+
         public void Dispose()
         {
             // TODO release managed resources here
