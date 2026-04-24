@@ -234,15 +234,8 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         v?.Parent = u.Parent;
     }
     #endregion
-    
-    public IEnumerable<TreeEntry<TKey, TValue>>  InOrder() => InOrderTraversal(Root);
-    
-    private IEnumerable<TreeEntry<TKey, TValue>>  InOrderTraversal(TNode? node)
-    {
-        if (node == null) {  yield break; }
-        throw new NotImplementedException();
-    }
-    
+
+    public IEnumerable<TreeEntry<TKey, TValue>> InOrder() => new TreeIterator(Root, TraversalStrategy.InOrder);
     public IEnumerable<TreeEntry<TKey, TValue>>  PreOrder() => throw new NotImplementedException();
     public IEnumerable<TreeEntry<TKey, TValue>>  PostOrder() => throw new NotImplementedException();
     public IEnumerable<TreeEntry<TKey, TValue>>  InOrderReverse() => throw new NotImplementedException();
