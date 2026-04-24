@@ -195,7 +195,8 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
     protected void RotateBigLeft(TNode x)
     {
-        throw new NotImplementedException();
+        RotateRight(x);
+        RotateLeft(x);
     }
     
     protected void RotateBigRight(TNode y)
