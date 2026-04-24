@@ -45,7 +45,7 @@
 - Большой левый/правый повороты.
 
 #### 1.2 Класс `BinarySearchTree<TKey, TValue>`
-Напишите реализацию класса `BinarySearchTree<TKey, TValue>`, который наследуется от `BinarySearchTreeBase<TKey, TValue, BstNode<TKey, TValue>>`, выполненного в п. 1.1, представляющую конкретную реализацию дерева двоичного поиска
+Напишите реализацию класса `BinarySearchTree<TKey, TValue>`, который наследуется от `BinarySearchTreeBase<TKey, TValue, BstNode<TKey, TValue>>`, выполненного в п. 1.1, представляющую конкретную реализацию дерева двоичного поиска.
 
 **Путь в репозитории:** `/TreeDataStructures/Implementations/BST/BinarySearchTree`
 
