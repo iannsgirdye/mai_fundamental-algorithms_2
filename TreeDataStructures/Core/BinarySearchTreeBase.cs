@@ -325,6 +325,33 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         {
             _stack = null;
         }
+
+        private void InitializeStack()
+        {
+            if (_root == null) return;
+
+            switch (_strategy)
+            {
+                case TraversalStrategy.InOrder:
+                    PushLeftChain(_root, 0);
+                    break;
+                case TraversalStrategy.InOrderReverse:
+                    PushRightChain(_root, 0);
+                    break;
+                case TraversalStrategy.PreOrder:
+                    _stack!.Push((_root, 0));
+                    break;
+                case TraversalStrategy.PreOrderReverse:
+                    _stack!.Push((_root, 0));
+                    break;
+                case TraversalStrategy.PostOrder:
+                    _stack!.Push((_root, 0));
+                    break;
+                case TraversalStrategy.PostOrderReverse:
+                    _stack!.Push((_root, 0));
+                    break;
+            }
+        }
     }
     
     
