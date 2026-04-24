@@ -72,11 +72,11 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         if (cmp < 0)
         {
-            parent.Left = newNode;
+            parent!.Left = newNode;
         }
         else
         {
-            parent.Right = newNode;
+            parent!.Right = newNode;
         }
         newNode.Parent = parent;
         Count++;
@@ -180,7 +180,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     {
         if (x == null || x.Right == null) { return; }
         TNode child = x.Right;
-        TNode parent = x.Parent;
+        TNode? parent = x.Parent;
 
         x.Right = child.Left;
         x.Right?.Parent = x;
@@ -200,7 +200,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     {
         if (y == null || y.Left == null) { return; }
         TNode child = y.Left;
-        TNode parent = y.Parent;
+        TNode? parent = y.Parent;
 
         y.Left = child.Right;
         y.Left?.Parent = y;
@@ -538,7 +538,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             {
                 return false;
             }
-            TNode parent = _current.Parent;
+            TNode? parent = _current.Parent;
             if (parent != null)
             {
                 if (parent.Left == _current)
@@ -572,7 +572,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             {
                 return false;
             }
-            TNode parent = _current.Parent;
+            TNode? parent = _current.Parent;
             if (parent != null)
             {
                 if (parent.Right == _current)
