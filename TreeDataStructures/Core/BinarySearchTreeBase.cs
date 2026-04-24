@@ -434,7 +434,40 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             return false;
         }
 
-        private bool MoveNextInOrderReverse() { }
+        private bool MoveNextInOrderReverse()
+        {
+            if (_current == null)
+            {
+                return false;
+            }
+            if (_current.Left != null)
+            {
+                _current = _current.Left;
+                _currentDepth++;
+                while (_current.Right != null)
+                {
+                    _current = _current.Right;
+                    _currentDepth++;
+                }
+                return true;
+            }
+
+            TNode? parent = _current.Parent;
+            while (parent != null && parent.Left == _current)
+            {
+                _current = parent;
+                parent = parent.Parent;
+                _currentDepth--;
+            }
+            if (parent != null)
+            {
+                _current = parent;
+                _currentDepth--;
+                return true;
+            }
+            _current = null;
+            return false;
+        }
 
         private bool MoveNextPreOrder()
         {
