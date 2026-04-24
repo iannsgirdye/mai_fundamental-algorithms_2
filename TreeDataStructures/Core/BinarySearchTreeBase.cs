@@ -144,6 +144,13 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         return null;
     }
 
+    private TNode? FindMinimum(TNode node)
+    {
+        if (node == null) { return null; }
+        while (node.Left != null) { node = node.Left; }
+        return node;
+    }
+
     protected void RotateLeft(TNode x)
     {
         throw new NotImplementedException();
