@@ -257,15 +257,31 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         IEnumerable<TreeEntry<TKey, TValue>>,
         IEnumerator<TreeEntry<TKey, TValue>>
     {
-        // probably add something here
-        private readonly TraversalStrategy _strategy; // or make it template parameter?
-        
+        private readonly TNode? _root;
+        private readonly TraversalStrategy _strategy;
+        private Stack<(TNode node, int depth)>? _stack;
+        private TNode? _current;
+        private int _currentDepth;
+        private TNode? _prev;
+        private bool _initialized;
+
+        public TreeIterator(TNode? root, TraversalStrategy strategy)
+        {
+            _root = root;
+            _strategy = strategy;
+            _stack = new Stack<(TNode, int)>();
+            _current = null;
+            _currentDepth = -1;
+            _prev = null;
+            _initialized = false;
+        }
+
         public IEnumerator<TreeEntry<TKey, TValue>> GetEnumerator() => this;
         IEnumerator IEnumerable.GetEnumerator() => this;
         
         public TreeEntry<TKey, TValue> Current => throw new NotImplementedException();
         object IEnumerator.Current => Current;
-        
+
         
         public bool MoveNext()
         {
