@@ -283,9 +283,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         {
             _root = root;
             _strategy = strategy;
-            _current = null;
-            _currentDepth = -1;
-            _started = false;
+            Reset();
         }
 
         public IEnumerator<TreeEntry<TKey, TValue>> GetEnumerator() => this;
@@ -324,7 +322,11 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             }
         }
 
-        public void Reset() { }
+        public void Reset() {
+            _current = null;
+            _currentDepth = -1;
+            _started = false;
+        }
 
         public void Dispose() { }
 
