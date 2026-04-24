@@ -330,7 +330,72 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         public void Dispose() { }
 
-        private void InitStart() { }
+        private void InitStart()
+        {
+            _current = _root;
+            _currentDepth = 0;
+            switch (_strategy)
+            {
+                case TraversalStrategy.InOrder: return InitStartInOrder();
+                case TraversalStrategy.InOrderReverse: return InitStartInOrderReverse();
+                case TraversalStrategy.PreOrder: return;
+                case TraversalStrategy.PreOrderReverse: return;
+                case TraversalStrategy.PostOrder: return InitStartPostOrder();
+                case TraversalStrategy.PostOrderReverse: return InitStartPostOrderReverse();
+            }
+        }
+
+        private void InitStartInOrder()
+        {
+            while (_current!.Left != null)
+            {
+                _current = _current.Left;
+                _currentDepth++;
+            }
+        }
+
+        private void InitStartInOrderReverse()
+        {
+            while (_current!.Right != null)
+            {
+                _current = _current.Right;
+                _currentDepth++;
+            }
+        }
+
+        private void InitStartPostOrder()
+        {
+            while (_current!.Left != null && _current!.Right != null)
+            {
+                if (_current!.Left != null)
+                {
+                    _current = _current.Left;
+                    _currentDepth++;
+                }
+                else if (_current!.Right != null)
+                {
+                    _current = _current.Right;
+                    _currentDepth++;
+                }
+            }
+        }
+
+        private void InitStartPostOrderReverse()
+        {
+            while (_current!.Left != null && _current!.Right != null)
+            {
+                if (_current!.Right != null)
+                {
+                    _current = _current.Right;
+                    _currentDepth++;
+                }
+                else if (_current!.Left != null)
+                {
+                    _current = _current.Left;
+                    _currentDepth++;
+                }
+            }
+        }
 
         private bool MoveNextInOrder() { }
 
