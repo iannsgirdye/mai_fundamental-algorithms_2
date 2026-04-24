@@ -278,8 +278,16 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         public IEnumerator<TreeEntry<TKey, TValue>> GetEnumerator() => this;
         IEnumerator IEnumerable.GetEnumerator() => this;
-        
-        public TreeEntry<TKey, TValue> Current => throw new NotImplementedException();
+
+        public TreeEntry<TKey, TValue> Current
+        {
+            get
+            {
+                if (_current == null)
+                    throw new InvalidOperationException("Iterator not moved to an element.");
+                return new TreeEntry<TKey, TValue>(_current.Key, _current.Value, _currentDepth);
+            }
+        }
         object IEnumerator.Current => Current;
 
         
