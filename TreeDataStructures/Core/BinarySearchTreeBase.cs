@@ -386,11 +386,22 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
     private bool MoveNextInOrderReverse()
     {
-        if (_stack!.Count == 0) return false;
+        if (_stack!.Count == 0) { return false };
         var (node, depth) = _stack.Pop();
         _current = node;
         _currentDepth = depth;
         PushRightChain(node.Left, depth + 1);
+        return true;
+    }
+
+    private bool MoveNextPreOrder()
+    {
+        if (_stack!.Count == 0) { return false };
+        var (node, depth) = _stack.Pop();
+        _current = node;
+        _currentDepth = depth;
+        if (node.Right != null) _stack.Push((node.Right, depth + 1));
+        if (node.Left != null) _stack.Push((node.Left, depth + 1));
         return true;
     }
 
