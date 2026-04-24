@@ -378,18 +378,11 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         private void InitStartPostOrderReverse()
         {
-            while (_current!.Left != null && _current!.Right != null)
+            while (_current!.Left != null || _current!.Right != null)
             {
-                if (_current!.Right != null)
-                {
-                    _current = _current.Right;
-                    _currentDepth++;
-                }
-                else if (_current!.Left != null)
-                {
-                    _current = _current.Left;
-                    _currentDepth++;
-                }
+                if (_current!.Right != null) { _current = _current.Right; }
+                else { _current = _current.Left; }
+                _currentDepth++;
             }
         }
 
