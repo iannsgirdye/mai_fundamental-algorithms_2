@@ -35,7 +35,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         int cmp;
         while (current != null)
         {
-            cmp = Comparer.Compare(key, current.key);
+            cmp = Comparer.Compare(key, current.Key);
             if (cmp == 0)
             {
                 current.Value = value;
@@ -55,7 +55,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         }
         newNode.Parent = parent;
         Count++;
-        OnNodeAdded();
+        OnNodeAdded(newNode);
     }
 
     
