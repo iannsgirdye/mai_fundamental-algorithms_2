@@ -183,7 +183,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         TNode parent = x.Parent;
 
         x.Right = child.Left;
-        if (x.Right != null) { x.Right.Parent = x; }
+        x.Right?.Parent = x;
 
         child.Left = x;
         x.Parent = child;
@@ -203,7 +203,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         TNode parent = y.Parent;
 
         y.Left = child.Right;
-        if (y.Left != null) { y.Left.Parent = y; }
+        y.Left?.Parent = y;
 
         child.Right = y;
         y.Parent = child;
