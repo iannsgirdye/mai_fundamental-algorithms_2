@@ -11,7 +11,22 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
     /// </summary>
     protected virtual (TreapNode<TKey, TValue>? Left, TreapNode<TKey, TValue>? Right) Split(TreapNode<TKey, TValue>? root, TKey key)
     {
-        throw new NotImplementedException("Implement Split operation");
+        if (root == null)
+        {
+            return (null, null)
+        }
+        if (Comparer.Compare(key, root.Key) < 0)
+        {
+            (var newLeft, var newRight) = Split(root.Left, key);
+            root.Left = newRight;
+            root.Left?.Parent = root;
+            return (newLeft, root);
+        }
+        (var newLeft, var newRight) = Split(root.Right, key);
+        root.Right = newLeft;
+        root.Right?.Parent = root;
+        return (root, newRight);
+        
     }
 
     /// <summary>
