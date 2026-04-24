@@ -579,8 +579,41 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             return false;
         }
 
-        private bool MoveNextPostOrderReverse() { }
+        private bool MoveNextPostOrderReverse()
+        {
+            if (_current == null)
+            {
+                return false;
+            }
+            TNode parent = _current.Parent;
+            if (parent != null)
+            {
+                if (parent.Right == _current)
+                {
+                    _current = parent;
+                    _currentDepth--;
+                    if (_current.Left != null)
+                    {
+                        _current = _current.Left;
+                        _currentDepth++;
+                        while (_current.Right != null)
+                        {
+                            _current = _current.Right;
+                            _currentDepth++;
+                        }
+                    }
+                }
+                else
+                {
+                    _current = parent;
+                    _currentDepth--;
+                }
+                return true;
+            }
+            return false;
+        }
     }
+}
 
     private enum TraversalStrategy { InOrder, PreOrder, PostOrder, InOrderReverse, PreOrderReverse, PostOrderReverse }
     
