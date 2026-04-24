@@ -72,7 +72,21 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     
     protected virtual void RemoveNode(TNode node)
     {
-        throw new NotImplementedException("Implement standard BST delete logic using Transplant helper");
+        TNode deleteNode = node;
+        TNode? parent = deleteNode.Parent;
+        TNode? replacement;
+
+        if (deleteNode.Left != null && deleteNode.Right != null)
+        {
+            deleteNode = FindMinimum(deleteNode.Right)!;
+            parent = deleteNode.Parent;
+            node.Key = deleteNode.Key;
+            node.Value = deleteNode.Value;
+        }
+
+        replacement = deleteNode.Left ?? deleteNode.Right;
+        Transplant(deleteNode, replacement);
+        OnNodeRemoved(parent, replacement);
     }
 
     public virtual bool ContainsKey(TKey key) => FindNode(key) != null;
