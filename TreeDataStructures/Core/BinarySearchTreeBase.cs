@@ -29,7 +29,18 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             return keys;
         }
     }
-    public ICollection<TValue> Values => throw new NotImplementedException();
+    public ICollection<TValue> Values
+    {
+        get
+        {
+            var values = new List<TKey>();
+            foreach (var entry in InOrder())
+            {
+                values.Add(entry.Value);
+            }
+            return values;
+        }
+    }
 
 
     public virtual void Add(TKey key, TValue value)
