@@ -303,7 +303,26 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
         object IEnumerator.Current => Current;
 
-        public bool MoveNext() { }
+        public bool MoveNext()
+        {
+            if (!_started)
+            {
+                if (_root == null) { return false; }
+                InitStart();
+                _started = true;
+            }
+
+            switch (_strategy)
+            {
+                case TraversalStrategy.InOrder: return MoveNextInOrder();
+                case TraversalStrategy.PreOrder: return MoveNextPreOrder();
+                case TraversalStrategy.PostOrder: return MoveNextPostOrder();
+                case TraversalStrategy.InOrderReverse: return MoveNextInOrderReverse();
+                case TraversalStrategy.PreOrderReverse: return MoveNextPreOrderReverse();
+                case TraversalStrategy.PostOrderReverse: return MoveNextPostOrderReverse();
+                default: return false;
+            }
+        }
 
         public void Reset() { }
 
