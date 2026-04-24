@@ -175,7 +175,22 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
 
     protected void RotateRight(TNode y)
     {
-        throw new NotImplementedException();
+        if (y == null || y.Left == null) { return; }
+        TNode child = y.Left;
+        TNode parent = y.Parent;
+
+        y.Left = child.Right;
+        if (y.Left != null) { y.Left.Parent = y }
+
+        child.Right = y;
+        y.Parent = child;
+
+        if (parent == null) { Root = child; }
+        else {
+            if (y.IsLeftChild) { parent.Left = child; }
+            else { parent.Right = child; }
+        }
+        child.Parent = parent;
     }
 
     protected void RotateBigLeft(TNode x)
