@@ -277,10 +277,16 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         private readonly TraversalStrategy _strategy;
         private TNode? _current;
         private int _currentDepth;
-        private TNode? _prev;
         private bool _started;
 
-        public TreeIterator(TNode? root, TraversalStrategy strategy) {  }
+        public TreeIterator(TNode? root, TraversalStrategy strategy)
+        {
+            _root = root;
+            _strategy = strategy;
+            _current = null;
+            _currentDepth = -1;
+            _started = false;
+        }
 
         public IEnumerator<TreeEntry<TKey, TValue>> GetEnumerator() => this;
         IEnumerator IEnumerable.GetEnumerator() => this;
