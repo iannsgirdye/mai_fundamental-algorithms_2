@@ -440,6 +440,30 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         return false;
     }
 
+    private bool MoveNextPostOrderReverse()
+    {
+        while (_stack!.Count > 0)
+        {
+            var (node, depth) = _stack.Peek();
+            if (node.Right != null && _prev != node.Right && _prev != node.Left)
+            {
+                _stack.Push((node.Right, depth + 1));
+            }
+            else if (node.Left != null && _prev != node.Left)
+            {
+                _stack.Push((node.Left, depth + 1));
+            }
+            else
+            {
+                _current = node;
+                _currentDepth = depth;
+                _prev = _stack.Pop().node;
+                return true;
+            }
+        }
+        return false;
+    }
+
     private enum TraversalStrategy { InOrder, PreOrder, PostOrder, InOrderReverse, PreOrderReverse, PostOrderReverse }
     
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
