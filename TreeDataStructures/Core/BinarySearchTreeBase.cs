@@ -374,6 +374,16 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         }
     }
 
+    private bool MoveNextInOrder()
+    {
+        if (_stack!.Count == 0) { return false };
+        var (node, depth) = _stack.Pop();
+        _current = node;
+        _currentDepth = depth;
+        PushLeftChain(node.Right, depth + 1);
+        return true;
+    }
+
 
     private enum TraversalStrategy { InOrder, PreOrder, PostOrder, InOrderReverse, PreOrderReverse, PostOrderReverse }
     
