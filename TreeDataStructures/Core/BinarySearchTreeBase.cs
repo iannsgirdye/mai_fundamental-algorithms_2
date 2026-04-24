@@ -478,6 +478,16 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     public void Add(KeyValuePair<TKey, TValue> item) => Add(item.Key, item.Value);
     public void Clear() { Root = null; Count = 0; }
     public bool Contains(KeyValuePair<TKey, TValue> item) => ContainsKey(item.Key);
-    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw new NotImplementedException();
+
+    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+    {
+        foreach (var entry in InOrder())
+        {
+            if (arrayIndex >= array.Length)
+                throw new ArgumentException("Array too small");
+            array[arrayIndex++] = new KeyValuePair<TKey, TValue>(entry.Key, entry.Value);
+        }
+    }
+
     public bool Remove(KeyValuePair<TKey, TValue> item) => Remove(item.Key);
 }
