@@ -34,7 +34,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     {
         get
         {
-            var values = new List<Values>();
+            var values = new List<TValue>();
             foreach (var entry in InOrder())
             {
                 values.Add(entry.Value);
