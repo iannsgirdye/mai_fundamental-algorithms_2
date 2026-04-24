@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 using TreeDataStructures.Interfaces;
@@ -274,22 +275,12 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     {
         private readonly TNode? _root;
         private readonly TraversalStrategy _strategy;
-        private Stack<(TNode node, int depth)>? _stack;
         private TNode? _current;
         private int _currentDepth;
         private TNode? _prev;
-        private bool _initialized;
+        private bool _started;
 
-        public TreeIterator(TNode? root, TraversalStrategy strategy)
-        {
-            _root = root;
-            _strategy = strategy;
-            _stack = new Stack<(TNode, int)>();
-            _current = null;
-            _currentDepth = -1;
-            _prev = null;
-            _initialized = false;
-        }
+        public TreeIterator(TNode? root, TraversalStrategy strategy) {  }
 
         public IEnumerator<TreeEntry<TKey, TValue>> GetEnumerator() => this;
         IEnumerator IEnumerable.GetEnumerator() => this;
@@ -303,180 +294,28 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
                 return new TreeEntry<TKey, TValue>(_current.Key, _current.Value, _currentDepth);
             }
         }
+
         object IEnumerator.Current => Current;
 
+        public bool MoveNext() { }
 
-        public bool MoveNext()
-        {
-            if (!_initialized)
-            {
-                InitializeStack();
-                _initialized = true;
-            }
+        public void Reset() { }
 
-            switch (_strategy)
-            {
-                case TraversalStrategy.InOrder: return MoveNextInOrder();
-                case TraversalStrategy.PreOrder: return MoveNextPreOrder();
-                case TraversalStrategy.PostOrder: return MoveNextPostOrder();
-                case TraversalStrategy.InOrderReverse: return MoveNextInOrderReverse();
-                case TraversalStrategy.PreOrderReverse: return MoveNextPreOrderReverse();
-                case TraversalStrategy.PostOrderReverse: return MoveNextPostOrderReverse();
-                default: return false;
-            }
-        }
+        public void Dispose() { }
 
-        public void Reset()
-        {
-            _stack?.Clear();
-            _current = null;
-            _currentDepth = -1;
-            _prev = null;
-            _initialized = false;
-        }
+        private void InitStart() { }
 
+        private bool MoveNextInOrder() { }
 
-        public void Dispose()
-        {
-            _stack = null;
-        }
+        private bool MoveNextInOrderReverse() { }
 
-        private void InitializeStack()
-        {
-            if (_root == null) return;
+        private bool MoveNextPreOrder() { }
 
-            switch (_strategy)
-            {
-                case TraversalStrategy.InOrder:
-                    PushLeftChain(_root, 0);
-                    break;
-                case TraversalStrategy.InOrderReverse:
-                    PushRightChain(_root, 0);
-                    break;
-                case TraversalStrategy.PreOrder:
-                    _stack!.Push((_root, 0));
-                    break;
-                case TraversalStrategy.PreOrderReverse:
-                    _stack!.Push((_root, 0));
-                    break;
-                case TraversalStrategy.PostOrder:
-                    _stack!.Push((_root, 0));
-                    break;
-                case TraversalStrategy.PostOrderReverse:
-                    _stack!.Push((_root, 0));
-                    break;
-            }
-        }
+        private bool MoveNextPreOrderReverse() { }
 
-        private void PushLeftChain(TNode? node, int depth)
-        {
-            while (node != null)
-            {
-                _stack!.Push((node, depth));
-                node = node.Left;
-                depth++;
-            }
-        }
+        private bool MoveNextPostOrder() { }
 
-        private void PushRightChain(TNode? node, int depth)
-        {
-            while (node != null)
-            {
-                _stack!.Push((node, depth));
-                node = node.Right;
-                depth++;
-            }
-        }
-
-        private bool MoveNextInOrder()
-        {
-            if (_stack!.Count == 0) { return false; }
-            var (node, depth) = _stack.Pop();
-            _current = node;
-            _currentDepth = depth;
-            PushLeftChain(node.Right, depth + 1);
-            return true;
-        }
-
-        private bool MoveNextInOrderReverse()
-        {
-            if (_stack!.Count == 0) { return false; }
-            var (node, depth) = _stack.Pop();
-            _current = node;
-            _currentDepth = depth;
-            PushRightChain(node.Left, depth + 1);
-            return true;
-        }
-
-        private bool MoveNextPreOrder()
-        {
-            if (_stack!.Count == 0) { return false; }
-            var (node, depth) = _stack.Pop();
-            _current = node;
-            _currentDepth = depth;
-            if (node.Right != null) { _stack.Push((node.Right, depth + 1)); }
-            if (node.Left != null) { _stack.Push((node.Left, depth + 1)); }
-            return true;
-        }
-
-        private bool MoveNextPreOrderReverse()
-        {
-            if (_stack!.Count == 0) { return false; }
-            var (node, depth) = _stack.Pop();
-            _current = node;
-            _currentDepth = depth;
-            if (node.Left != null) { _stack.Push((node.Left, depth + 1)); }
-            if (node.Right != null) { _stack.Push((node.Right, depth + 1)); }
-            return true;
-        }
-
-        private bool MoveNextPostOrder()
-        {
-            while (_stack!.Count > 0)
-            {
-                var (node, depth) = _stack.Peek();
-                if (node.Left != null && _prev != node.Left && _prev != node.Right)
-                {
-                    _stack.Push((node.Left, depth + 1));
-                }
-                else if (node.Right != null && _prev != node.Right)
-                {
-                    _stack.Push((node.Right, depth + 1));
-                }
-                else
-                {
-                    _current = node;
-                    _currentDepth = depth;
-                    _prev = _stack.Pop().node;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool MoveNextPostOrderReverse()
-        {
-            while (_stack!.Count > 0)
-            {
-                var (node, depth) = _stack.Peek();
-                if (node.Right != null && _prev != node.Right && _prev != node.Left)
-                {
-                    _stack.Push((node.Right, depth + 1));
-                }
-                else if (node.Left != null && _prev != node.Left)
-                {
-                    _stack.Push((node.Left, depth + 1));
-                }
-                else
-                {
-                    _current = node;
-                    _currentDepth = depth;
-                    _prev = _stack.Pop().node;
-                    return true;
-                }
-            }
-            return false;
-        }
+        private bool MoveNextPostOrderReverse() { }
     }
 
     private enum TraversalStrategy { InOrder, PreOrder, PostOrder, InOrderReverse, PreOrderReverse, PostOrderReverse }
