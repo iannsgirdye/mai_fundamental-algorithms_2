@@ -196,7 +196,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         child.Parent = parent;
     }
 
-    protected void RotateRight(TNode y)
+    protected void RotateRight(TNode? y)
     {
         if (y == null || y.Left == null) { return; }
         TNode child = y.Left;
