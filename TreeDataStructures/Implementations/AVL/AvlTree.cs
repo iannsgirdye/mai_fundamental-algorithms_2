@@ -60,7 +60,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     protected override void OnNodeAdded(AvlNode<TKey, TValue> newNode)
     {
-        throw new NotImplementedException();
+        Balance(newNode, isAdd: true);
 }
 
     protected override void OnNodeRemoved(AvlNode<TKey, TValue>? parent, AvlNode<TKey, TValue>? child)
