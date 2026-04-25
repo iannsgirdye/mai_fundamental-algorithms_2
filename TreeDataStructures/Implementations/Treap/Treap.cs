@@ -61,10 +61,8 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
         throw new NotImplementedException("Implement Remove using Split and Merge");
     }
 
-    protected override TreapNode<TKey, TValue> CreateNode(TKey key, TValue value)
-    {
-        throw new NotImplementedException();
-    }
+    protected override TreapNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
+    
     protected override void OnNodeAdded(TreapNode<TKey, TValue> newNode) { }
     protected override void OnNodeRemoved(TreapNode<TKey, TValue>? parent, TreapNode<TKey, TValue>? child) { }
 }
