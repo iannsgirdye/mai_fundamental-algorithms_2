@@ -53,7 +53,26 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
 
     public override void Add(TKey key, TValue value)
     {
-        throw new NotImplementedException("Implement Add using Split and Merge");
+        var existingNode = FindNode(key);
+        if (existingNode != null)
+        {
+            existingNode.Value = value;
+            return;
+        }
+
+        var newNode = CreateNode(key, value);
+        if (Root == null)
+        {
+            Root = newNode;
+            return;
+        }
+
+        (var left, var right) = Split(Root, key);
+        Root = Merge(Merge(left, newNode), right);
+        Root?.Parent = null;
+        
+        this.Count++;
+        OnNodeAdded(newNode);
     }
 
     public override bool Remove(TKey key)
