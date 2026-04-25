@@ -4,7 +4,7 @@ namespace TreeDataStructures.Implementations.AVL;
 
 public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<TKey, TValue>>
     where TKey : IComparable<TKey>
-{
+    {
     protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value)
         => new(key, value);
     
@@ -13,5 +13,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
         throw new NotImplementedException();
     }
 
-    
+    protected override void OnNodeRemoved(AvlNode<TKey, TValue>? parent, AvlNode<TKey, TValue>? child) {
+        throw new NotImplementedException();
+    }
 }
