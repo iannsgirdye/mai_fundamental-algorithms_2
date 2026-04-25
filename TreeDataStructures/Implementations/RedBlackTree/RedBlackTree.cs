@@ -8,6 +8,11 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
     
     private bool IsRed(RbNode<TKey, TValue>? node) => !IsBlack(node);
 
+    private void SetBlack(RbNode<TKey, TValue>? node)
+    {
+        node?.Color = RbColor.Black;
+    }
+
     private void SetRed(RbNode<TKey, TValue>? node)
     {
         node?.Color = RbColor.Red;
