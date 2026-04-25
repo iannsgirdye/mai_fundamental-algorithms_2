@@ -54,21 +54,21 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
                 break;
             }
         }
-        if (IsRed(this.Root)) this.Root?.Color = RbColor.Black;
+        if (IsRed(this.Root)) SetBlack(this.Root);
     }
 
     private void AddCase1(RbNode<TKey, TValue> node)
     {
-        node.Color = RbColor.Black;
+        SetBlack(node);
     }
 
     private void AddCase2(RbNode<TKey, TValue> node) { }
 
     private void AddCase3(RbNode<TKey, TValue> node)
     {
-        node.Parent!.Color = RbColor.Black;
-        node.Uncle?.Color = RbColor.Black;
-        node.Grandparent?.Color = RbColor.Red;
+        SetBlack(node.Parent);
+        SetBlack(node.Uncle);
+        SetRed(node.Grandparent);
     }
 
     private void AddCases45(RbNode<TKey, TValue> node)
@@ -79,14 +79,14 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
             {
                 RotateLeft(node.Parent);
                 RotateRight(node.Parent);
-                node.Color = RbColor.Black;
-                node.Right!.Color = RbColor.Red;
+                SetBlack(node);
+                SetRed(node.Right);
             }
             else
             {
                 RotateRight(node.Grandparent!);
-                node.Parent.Color = RbColor.Black;
-                node.Parent.Right!.Color = RbColor.Red;
+                SetBlack(node.Parent);
+                SetRed(node.Parent.Right);
             }
         }
         else
@@ -95,14 +95,14 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
             {
                 RotateRight(node.Parent);
                 RotateLeft(node.Parent);
-                node.Color = RbColor.Black;
-                node.Left!.Color = RbColor.Red;
+                SetBlack(node);
+                SetRed(node.Left);
             }
             else
             {
                 RotateLeft(node.Grandparent!);
-                node.Parent.Color = RbColor.Black;
-                node.Parent.Left!.Color = RbColor.Red;
+                SetBlack(node.Parent);
+                SetRed(node.Parent.Left);
             }
         }
     }
