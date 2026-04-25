@@ -169,7 +169,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         return null;
     }
 
-    private TNode? FindMinimum(TNode node)
+    private TNode? FindMinimum(TNode? node)
     {
         if (node == null) { return null; }
         while (node.Left != null) { node = node.Left; }
