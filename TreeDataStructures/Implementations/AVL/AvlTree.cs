@@ -10,7 +10,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     private int UpdateHeight(AvlNode<TKey, TValue>? node) => Math.Max(GetHeight(node?.Left), GetHeight(node?.Right)) + 1;
 
-    private int GetBalanceFactor(AvlNode<TKey, TValue> node) => GetHeight(node.Left) - GetHeight(node.Right);
+    private int GetBalanceFactor(AvlNode<TKey, TValue>? node) => GetHeight(node?.Left) - GetHeight(node?.Right);
 
     protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
 
