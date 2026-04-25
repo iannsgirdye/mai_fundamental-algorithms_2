@@ -30,7 +30,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
                 {
                     RotateLeft(current.Left);
                     UpdateHeight(current.Left);
-                    UpdateHeight(current.Left.Parent);
+                    UpdateHeight(current.Left?.Parent);
                 }
                 RotateRight(current);
                 UpdateHeight(current);
@@ -45,7 +45,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
                 {
                     RotateRight(current.Right);
                     UpdateHeight(current.Right);
-                    UpdateHeight(current.Right.Parent);
+                    UpdateHeight(current.Right?.Parent);
                 }
                 RotateLeft(current);
                 UpdateHeight(current);
