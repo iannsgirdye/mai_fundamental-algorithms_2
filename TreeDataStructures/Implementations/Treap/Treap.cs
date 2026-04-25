@@ -92,6 +92,7 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
         if (Root == null)
         {
             Root = newNode;
+            Count++;
             return;
         }
 
@@ -99,7 +100,7 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
         Root = Merge(Merge(left, newNode), right);
         Root?.Parent = null;
         
-        this.Count++;
+        Count++;
         OnNodeAdded(newNode);
     }
 
@@ -117,7 +118,7 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
         
         if (deleteNode != null)
         {
-            this.Count--;
+            Count--;
             OnNodeRemoved(null, null);
             return true;
         }
