@@ -18,6 +18,14 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         node?.Color = RbColor.Red;
     }
 
+    private void SetColorFrom(RbNode<TKey, TValue>? source, RbNode<TKey, TValue>? target)
+    {
+        if (target != null)
+        {
+            source?.Color = target.Color;
+        }
+    }
+
     protected override RbNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
     
     protected override void OnNodeAdded(RbNode<TKey, TValue> newNode)
