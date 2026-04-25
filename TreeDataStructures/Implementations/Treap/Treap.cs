@@ -49,6 +49,28 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
             return right;
         }
     }
+
+    private (TreapNode<TKey, TValue>? Left, TreapNode<TKey, TValue>? Right) SplitLess(TreapNode<TKey, TValue>? root, TKey key)
+    {
+        if (root == null)
+        {
+            return (null, null);
+        }
+        if (Comparer.Compare(key, root.Key) < 0)
+        {
+            (var left, var right) = SplitLess(root.Left, key);
+            root.Left = right;
+            root.Left?.Parent = root;
+            return (left, root);
+        }
+        else
+        {
+            (var left, var right) = SplitLess(root.Right, key);
+            root.Right = left;
+            root.Right?.Parent = root;
+            return (root, right);
+        }
+    }
     
 
     public override void Add(TKey key, TValue value)
