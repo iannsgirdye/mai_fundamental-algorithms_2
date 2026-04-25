@@ -87,6 +87,24 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         }
     }
 
+    protected override void RemoveNode(RbNode<TKey, TValue> node) {
+        RbNode<TKey, TValue> deleteNode = node;
+        RbNode<TKey, TValue>? parent = deleteNode.Parent;
+        RbNode<TKey, TValue>? replacement;
+
+        if (deleteNode.Left != null && deleteNode.Right != null) {
+            deleteNode = FindMinimum(deleteNode.Right)!;
+            parent = deleteNode.Parent;
+            node.Key = deleteNode.Key;
+            node.Value = deleteNode.Value;
+        }
+
+        replacement = deleteNode.Left ?? deleteNode.Right;
+        var deleteNodeColor = deleteNode.Color;
+        Transplant(deleteNode, replacement);
+        OnNodeRemoved(parent, replacement);
+    }
+
     protected override void OnNodeRemoved(RbNode<TKey, TValue>? parent, RbNode<TKey, TValue>? child)
     {
         throw new NotImplementedException();
