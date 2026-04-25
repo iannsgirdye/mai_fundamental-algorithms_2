@@ -14,10 +14,54 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
 
+    private void Balance(AvlNode<TKey, TValue> newNode, bool isInsert)
+    {
+        var current = newNode.Parent;
+        int balanceFactor = 0;
+        int childBalanceFactor = 0;
+        while (current != null)
+        {
+            UpdateHeight(current);
+            balanceFactor = GetBalanceFactor(current);
+            if (balanceFactor == 2)
+            {
+                childBalanceFactor = GetBalanceFactor(current.Left);
+                if (childBalanceFactor == -1)
+                {
+                    RotateLeft(current.Left);
+                    UpdateHeight(current.Left);
+                    UpdateHeight(current.Left.Parent);
+                }
+                RotateRight(current);
+                UpdateHeight(current);
+                UpdateHeight(current.Parent);
+
+                if (isInsert) { return; }
+            }
+            else if (balanceFactor == -2)
+            {
+                childBalanceFactor = GetBalanceFactor(current.Right);
+                if (childBalanceFactor == 1)
+                {
+                    RotateRight(current.Right);
+                    UpdateHeight(current.Right);
+                    UpdateHeight(current.Right.Parent);
+                }
+                RotateLeft(current);
+                UpdateHeight(current);
+                UpdateHeight(current.Parent);
+
+                if (isInsert) { return; }
+            }
+
+            current = current.Parent;
+        }
+    }
+
     protected override void OnNodeAdded(AvlNode<TKey, TValue> newNode)
     {
         throw new NotImplementedException();
-    }
+}
 
     protected override void OnNodeRemoved(AvlNode<TKey, TValue>? parent, AvlNode<TKey, TValue>? child)
     {
