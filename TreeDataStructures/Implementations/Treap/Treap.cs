@@ -77,7 +77,21 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
 
     public override bool Remove(TKey key)
     {
-        throw new NotImplementedException("Implement Remove using Split and Merge");
+        if (Root == null || FindNode(key) == null) {
+            return false;
+        }
+
+        (var left, var right) = Split(Root, key);
+        (var lessNode, var deleteNode) = SplitLess(left, key);
+        Root = Merge(lessNode, right);
+        Root?.Parent = null;
+        
+        if (deleteNode != null) {
+            this.Count--;
+            OnNodeRemoved(null, null);
+            return true;
+        }
+        return false;
     }
 
     protected override TreapNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
