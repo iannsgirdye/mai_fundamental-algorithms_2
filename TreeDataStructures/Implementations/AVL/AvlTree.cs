@@ -11,8 +11,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     private int GetBalanceFactor(AvlNode<TKey, TValue> node) => GetHeight(node.Left) - GetHeight(node.Right);
 
-    protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value)
-        => new(key, value);
+    protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
 
     protected override void OnNodeAdded(AvlNode<TKey, TValue> newNode)
     {
