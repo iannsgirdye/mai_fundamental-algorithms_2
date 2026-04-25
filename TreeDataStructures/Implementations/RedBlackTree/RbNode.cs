@@ -12,4 +12,5 @@ public class RbNode<TKey, TValue>(TKey key, TValue value)
     : Node<TKey, TValue, RbNode<TKey, TValue>>(key, value)
 {
     public RbColor Color { get; set; } = RbColor.Red;
+    public RbNode<TKey, TValue>? Grandparent => this?.Parent?.Parent;
 }
