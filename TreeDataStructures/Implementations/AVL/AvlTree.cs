@@ -65,6 +65,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     protected override void OnNodeRemoved(AvlNode<TKey, TValue>? parent, AvlNode<TKey, TValue>? child)
     {
-        throw new NotImplementedException();
+        var start = parent ?? child;
+        if (start != null) { Balance(start, isAdd: false); }
     }
 }
