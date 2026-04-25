@@ -19,12 +19,12 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
                 AddCase1(node);
                 break;
             }
-            else if (node.Parent!.Color == RbColor.Black)
+            else if (IsBlack(node.Parent))
             { 
                 AddCase2(node);
                 break;         
             }
-            else if (node.Uncle != null && node.Uncle.Color == RbColor.Red)  // Parent is Red;
+            else if (IsRed(node.Uncle))  // Parent is Red;
             { 
                 AddCase3(node);
                 node = node.Grandparent;
@@ -35,7 +35,7 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
                 break;
             }
         }
-        if (this.Root?.Color == RbColor.Red) Root.Color = RbColor.Black;
+        if (IsRed(this.Root)) this.Root?.Color = RbColor.Black;
     }
 
     private void AddCase1(RbNode<TKey, TValue> node)
