@@ -62,7 +62,7 @@ public class Treap<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, TreapNode<
         {
             return (null, null);
         }
-        if (Comparer.Compare(key, root.Key) < 0)
+        if (Comparer.Compare(key, root.Key) <= 0)
         {
             (var left, var right) = SplitLess(root.Left, key);
             root.Left = right;
