@@ -14,9 +14,9 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
 
-    private void Balance(AvlNode<TKey, TValue> newNode, bool isAdd)
+    private void Balance(AvlNode<TKey, TValue> node, bool isAdd)
     {
-        var current = newNode.Parent;
+        var current = node.Parent;
         int balanceFactor = 0;
         int childBalanceFactor = 0;
         while (current != null)
