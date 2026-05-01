@@ -16,56 +16,48 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     private void Balance(AvlNode<TKey, TValue> node, bool isAdd)
     {
-        var current = node.Parent;
         int balanceFactor = 0;
         int childBalanceFactor = 0;
-        while (current != null)
+        while (node != null)
         {
-            UpdateHeight(current);
-            balanceFactor = GetBalanceFactor(current);
+            UpdateHeight(node);
+            balanceFactor = GetBalanceFactor(node);
             if (balanceFactor == 2)
             {
-                childBalanceFactor = GetBalanceFactor(current.Left);
+                childBalanceFactor = GetBalanceFactor(node.Left);
                 if (childBalanceFactor == -1)
                 {
-                    RotateLeft(current.Left);
-                    UpdateHeight(current.Left);
-                    UpdateHeight(current.Left?.Parent);
+                    RotateLeft(node.Left);
+                    UpdateHeight(node.Left);
+                    UpdateHeight(node.Left?.Parent);
                 }
-                RotateRight(current);
-                UpdateHeight(current);
-                UpdateHeight(current.Parent);
+                RotateRight(node);
+                UpdateHeight(node);
+                UpdateHeight(node.Parent);
 
                 if (isAdd) { return; }
             }
             else if (balanceFactor == -2)
             {
-                childBalanceFactor = GetBalanceFactor(current.Right);
+                childBalanceFactor = GetBalanceFactor(node.Right);
                 if (childBalanceFactor == 1)
                 {
-                    RotateRight(current.Right);
-                    UpdateHeight(current.Right);
-                    UpdateHeight(current.Right?.Parent);
+                    RotateRight(node.Right);
+                    UpdateHeight(node.Right);
+                    UpdateHeight(node.Right?.Parent);
                 }
-                RotateLeft(current);
-                UpdateHeight(current);
-                UpdateHeight(current.Parent);
+                RotateLeft(node);
+                UpdateHeight(node);
+                UpdateHeight(node.Parent);
 
                 if (isAdd) { return; }
             }
 
-            current = current.Parent;
+            node = node.Parent;
         }
     }
 
-    protected override void OnNodeAdded(AvlNode<TKey, TValue> newNode)
-    {
-        Balance(newNode, isAdd: true);
-}
+    protected override void OnNodeAdded(AvlNode<TKey, TValue> newNode) { Balance(newNode, isAdd: true); }
 
-    protected override void OnNodeRemoved(AvlNode<TKey, TValue>? parent, AvlNode<TKey, TValue>? child)
-    {
-        var start = parent ?? child;
-        if (start != null) { Balance(start, isAdd: false); }
-    }
+    protected override void OnNodeRemoved(AvlNode<TKey, TValue>? parent, AvlNode<TKey, TValue>? child) { Balance(parent, isAdd: false); }
 }
