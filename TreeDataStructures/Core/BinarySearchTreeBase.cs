@@ -169,14 +169,14 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         return null;
     }
 
-    private TNode? FindMinimum(TNode node)
+    private TNode? FindMinimum(TNode? node)
     {
         if (node == null) { return null; }
         while (node.Left != null) { node = node.Left; }
         return node;
     }
 
-    protected void RotateLeft(TNode x)
+    protected void RotateLeft(TNode? x)
     {
         if (x == null || x.Right == null) { return; }
         TNode child = x.Right;
@@ -196,7 +196,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
         child.Parent = parent;
     }
 
-    protected void RotateRight(TNode y)
+    protected void RotateRight(TNode? y)
     {
         if (y == null || y.Left == null) { return; }
         TNode child = y.Left;
