@@ -67,7 +67,9 @@ public class SplayTree<TKey, TValue> : BinarySearchTree<TKey, TValue>
     
     public override bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
     {
-        throw new NotImplementedException();
+        var node = FindNode(key);
+        value = (node == null) ? default : node.Value;
+        if (node != null) { Splay(node); }
+        return node != null;
     }
-    
 }
