@@ -60,10 +60,7 @@ public class SplayTree<TKey, TValue> : BinarySearchTree<TKey, TValue>
         Splay(newNode);
     }
     
-    protected override void OnNodeRemoved(BstNode<TKey, TValue>? parent, BstNode<TKey, TValue>? child)
-    {
-        throw new NotImplementedException();
-    }
+    protected override void OnNodeRemoved(BstNode<TKey, TValue>? parent, BstNode<TKey, TValue>? child) { }
     
     public override bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
     {
