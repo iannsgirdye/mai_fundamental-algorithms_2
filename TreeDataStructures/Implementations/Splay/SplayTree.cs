@@ -58,4 +58,14 @@ public class SplayTree<TKey, TValue> : BinarySearchTree<TKey, TValue>
         if (node != null) { Splay(node); }
         return node != null;
     }
+
+    public override bool ContainsKey(TKey key)
+    {
+        var node = FindNode(key);
+        if (node != null)
+        {
+            Splay(node);
+        }
+        return node != null;
+    }
 }
