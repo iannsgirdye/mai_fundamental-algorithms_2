@@ -26,11 +26,11 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         }
     }
 
-    private RbNode<TKey, TValue> GetSibling(RbNode<TKey, TValue> parent, bool nodeIsLeftChild) => nodeIsLeftChild ? parent.Right : parent.Left;
+    private RbNode<TKey, TValue>? GetSibling(RbNode<TKey, TValue> parent, bool nodeIsLeftChild) => nodeIsLeftChild ? parent.Right : parent.Left;
 
-    private RbNode<TKey, TValue> GetNearNephew(RbNode<TKey, TValue> subling, bool nodeIsLeftChild) => nodeIsLeftChild ? subling.Left : subling.Right;
+    private RbNode<TKey, TValue>? GetNearNephew(RbNode<TKey, TValue>? subling, bool nodeIsLeftChild) => nodeIsLeftChild ? subling?.Left : subling?.Right;
 
-    private RbNode<TKey, TValue> GetFarNephew(RbNode<TKey, TValue> subling, bool nodeIsLeftChild) => nodeIsLeftChild ? subling.Right : subling.Left;
+    private RbNode<TKey, TValue>? GetFarNephew(RbNode<TKey, TValue>? subling, bool nodeIsLeftChild) => nodeIsLeftChild ? subling?.Right : subling?.Left;
 
     protected override RbNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
 
