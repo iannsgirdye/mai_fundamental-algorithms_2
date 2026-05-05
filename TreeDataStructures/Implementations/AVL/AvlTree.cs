@@ -17,7 +17,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
 
     protected override AvlNode<TKey, TValue> CreateNode(TKey key, TValue value) => new(key, value);
 
-    private void Balance(AvlNode<TKey, TValue> node, bool isAdd)
+    private void Balance(AvlNode<TKey, TValue>? node, bool isAdd)
     {
         int balanceFactor = 0;
         int childBalanceFactor = 0;
