@@ -31,7 +31,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
                 if (childBalanceFactor == -1)
                 {
                     RotateLeft(node.Left);         // Не получилось применить большой поворот,
-                    UpdateHeight(node.Left.Left);  // потому что нужно обновлять высоту после каждого поворота
+                    UpdateHeight(node.Left!.Left);  // потому что нужно обновлять высоту после каждого поворота
                     UpdateHeight(node.Left);
                 }
                 RotateRight(node);
@@ -46,7 +46,7 @@ public class AvlTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, AvlNode<
                 if (childBalanceFactor == 1)
                 {
                     RotateRight(node.Right);
-                    UpdateHeight(node.Right.Right);
+                    UpdateHeight(node.Right!.Right);
                     UpdateHeight(node.Right);
                 }
                 RotateLeft(node);
