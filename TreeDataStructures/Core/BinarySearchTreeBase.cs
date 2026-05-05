@@ -55,7 +55,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
             return;
         }
 
-        TNode current = Root;
+        TNode? current = Root;
         TNode? parent = null;
         int cmp = 0;
         while (current != null)
