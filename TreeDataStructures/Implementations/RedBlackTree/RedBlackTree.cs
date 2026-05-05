@@ -189,9 +189,9 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
 
     private void RemoveCase1() { }
 
-    private void RemoveCase2(RbNode<TKey, TValue> node) { SetBlack(node); }
+    private void RemoveCase2(RbNode<TKey, TValue>? node) { SetBlack(node); }
 
-    private void RemoveCase3(RbNode<TKey, TValue> parent, RbNode<TKey, TValue> sibling, bool nodeIsLeftChild)
+    private void RemoveCase3(RbNode<TKey, TValue>? parent, RbNode<TKey, TValue>? sibling, bool nodeIsLeftChild)
     {
         SetBlack(sibling);
         SetRed(parent);
@@ -205,12 +205,12 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         }
     }
 
-    private void RemoveCase4(RbNode<TKey, TValue> parent, RbNode<TKey, TValue> sibling)
+    private void RemoveCase4(RbNode<TKey, TValue> parent, RbNode<TKey, TValue>? sibling)
     {
         SetRed(sibling);
     }
 
-    private void RemoveCase5(RbNode<TKey, TValue> sibling, RbNode<TKey, TValue> nearNephew, bool nodeIsLeftChild)
+    private void RemoveCase5(RbNode<TKey, TValue>? sibling, RbNode<TKey, TValue>? nearNephew, bool nodeIsLeftChild)
     {
         SetBlack(nearNephew);
         SetRed(sibling);
@@ -224,7 +224,7 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         }
     }
 
-    private void RemoveCase6(RbNode<TKey, TValue> parent, RbNode<TKey, TValue> sibling, RbNode<TKey, TValue> farNephew, bool nodeIsLeftChild)
+    private void RemoveCase6(RbNode<TKey, TValue> parent, RbNode<TKey, TValue>? sibling, RbNode<TKey, TValue>? farNephew, bool nodeIsLeftChild)
     {
         SetBlack(farNephew);
         SetColorFrom(parent, sibling);
