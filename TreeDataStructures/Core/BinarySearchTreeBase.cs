@@ -239,7 +239,7 @@ public abstract class BinarySearchTreeBase<TKey, TValue, TNode>(IComparer<TKey>?
     protected void RotateDoubleRight(TNode y)
     {
         RotateRight(y);
-        RotateRight(y);
+        RotateRight(y.Parent);
     }
     
     protected void Transplant(TNode u, TNode? v)
