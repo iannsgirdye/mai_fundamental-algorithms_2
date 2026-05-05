@@ -163,7 +163,7 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
             }
             if (IsBlack(nearNephew) && IsBlack(farNephew))  // siblind is black
             {
-                RemoveCase4(parent, sibling);
+                RemoveCase4(sibling);
                 if (IsRed(parent))
                 {
                     SetBlack(parent);
@@ -205,7 +205,7 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         }
     }
 
-    private void RemoveCase4(RbNode<TKey, TValue> parent, RbNode<TKey, TValue>? sibling)
+    private void RemoveCase4(RbNode<TKey, TValue>? sibling)
     {
         SetRed(sibling);
     }
