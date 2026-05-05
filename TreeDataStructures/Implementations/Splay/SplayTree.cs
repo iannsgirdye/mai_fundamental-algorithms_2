@@ -22,23 +22,19 @@ public class SplayTree<TKey, TValue> : BinarySearchTree<TKey, TValue>
             }
             else if (node.Parent.IsLeftChild && node.IsLeftChild)
             {
-                RotateRight(node.Parent.Parent);
-                RotateRight(node.Parent);
+                RotateDoubleRight(node.Parent.Parent!);
             }
             else if (node.Parent.IsLeftChild && node.IsRightChild)
             {
-                RotateLeft(node.Parent);
-                RotateRight(node.Parent);
+                RotateBigRight(node.Parent.Parent!);
             }
             else if (node.Parent.IsRightChild && node.IsRightChild)
             {
-                RotateLeft(node.Parent.Parent);
-                RotateLeft(node.Parent);
+                RotateDoubleLeft(node.Parent.Parent!);
             }
             else if (node.Parent.IsRightChild && node.IsLeftChild)
             {
-                RotateRight(node.Parent);
-                RotateLeft(node.Parent);
+                RotateBigLeft(node.Parent.Parent!);
             }
             node = node.Parent?.Parent;
         }
