@@ -152,7 +152,7 @@ public class RedBlackTree<TKey, TValue> : BinarySearchTreeBase<TKey, TValue, RbN
         RbNode<TKey, TValue>? sibling, nearNephew, farNephew;
         while (node != this.Root && IsBlack(node))
         {
-            nodeIsLeftChild = node == parent.Left;
+            nodeIsLeftChild = node == parent!.Left;
             sibling = GetSibling(parent, nodeIsLeftChild);
             nearNephew = GetNearNephew(sibling, nodeIsLeftChild);
             farNephew = GetFarNephew(sibling, nodeIsLeftChild);
