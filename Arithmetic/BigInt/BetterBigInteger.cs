@@ -32,7 +32,7 @@ public sealed class BetterBigInteger : IBigInteger
         if (digits == null)
             throw new ArgumentNullException(nameof(digits));
 
-        var length = RealLength(digits);
+        var length = TrimmedLength(digits);
         if (length == 0)
         {
             this._signBit = 0;
@@ -88,12 +88,24 @@ public sealed class BetterBigInteger : IBigInteger
         this._data = temp._data;
     }
 
-    public static int RealLength(uint[] arr)
+    internal static int TrimmedLength(uint[] arr)
     {
         int length = arr.Length;
         while (length > 0 && arr[length - 1] == 0)
             length--;
         return length;
+    }
+
+    internal static uint[] TrimLeadingZeros(uint[] arr)
+    {
+        var length = TrimmedLength(arr);
+        if (length == 0)
+            return new uint[] { 0 };
+        if (length == arr.Length)
+            return arr;
+        var result = new uint[length];
+        Array.Copy(arr, result, length);
+        return result;
     }
 
     #endregion
@@ -383,18 +395,6 @@ public sealed class BetterBigInteger : IBigInteger
         return (quotientTrimmed, remainderTrimmed);
     }
 
-    internal static uint[] TrimLeadingZeros(uint[] arr)
-    {
-        var length = RealLength(arr);
-        if (length == 0)
-            return new uint[] { 0 };
-        if (length == arr.Length)
-            return arr;
-        var result = new uint[length];
-        Array.Copy(arr, result, length);
-        return result;
-    }
-
     #endregion
 
     #region Bitwise operations
@@ -515,7 +515,7 @@ public sealed class BetterBigInteger : IBigInteger
         bool negative = (twos[twos.Length - 1] & 0x80000000) != 0;
         if (!negative)
         {
-            var length = RealLength(twos);
+            var length = TrimmedLength(twos);
             if (length == 0)
                 return (new uint[] { 0 }, false);
             uint[] digits = new uint[length];
@@ -536,7 +536,7 @@ public sealed class BetterBigInteger : IBigInteger
                 carry = sum >> SystemBase;
             }
 
-            var length = RealLength(inverted);
+            var length = TrimmedLength(inverted);
             if (length == 0)
                 return (new uint[] { 0 }, false);
 
@@ -648,7 +648,7 @@ public sealed class BetterBigInteger : IBigInteger
                 digits[i] = quotient;
             }
 
-            var length = RealLength(digits);
+            var length = TrimmedLength(digits);
             if (length == 0)
             {
                 char digitChar = remainder < 10 ? (char)('0' + remainder) : (char)('a' + remainder - 10);
