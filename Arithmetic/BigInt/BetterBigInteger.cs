@@ -19,10 +19,12 @@ public sealed class BetterBigInteger : IBigInteger
 
     public bool IsNegative => _signBit == 1;
 
-    private bool IsZero => (_data == null && _smallValue == 0) ||
-                           (_data != null && _data.Length == 1 && _data[0] == 0);
+    internal bool IsZero => (_data == null && _smallValue == 0) ||
+                            (_data != null && _data.Length == 1 && _data[0] == 0);
 
     public const int SystemBase = sizeof(uint) * 8;
+
+    private const int KaratsubaStart = 32;
 
     #region Constructors
 
@@ -262,11 +264,12 @@ public sealed class BetterBigInteger : IBigInteger
     public static BetterBigInteger operator *(BetterBigInteger a, BetterBigInteger b)
     {
         if (a.IsZero || b.IsZero)
-        {
             return new ("0", 10);
-        }
-        IMultiplier multiplier = new SimpleMultiplier();
-        return multiplier.Multiply(a, b);
+        
+        var maxLength = Math.Max(a.GetDigits().Length, b.GetDigits().Length);
+        if (maxLength > KaratsubaStart)
+            return new KaratsubaMultiplier().Multiply(a, b);
+        return new SimpleMultiplier().Multiply(a, b);
     }
 
     #endregion
