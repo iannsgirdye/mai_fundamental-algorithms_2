@@ -25,6 +25,7 @@ public sealed class BetterBigInteger : IBigInteger
     public const int SystemBase = sizeof(uint) * 8;
 
     private const int KaratsubaStart = 32;
+    private const int FFTStart = 256;
 
     #region Constructors
 
@@ -267,7 +268,9 @@ public sealed class BetterBigInteger : IBigInteger
             return new ("0", 10);
         
         var maxLength = Math.Max(a.GetDigits().Length, b.GetDigits().Length);
-        if (maxLength > KaratsubaStart)
+        if (maxLength >= FFTStart)
+            return new FftMultiplier().Multiply(a, b);
+        if (maxLength >= KaratsubaStart)
             return new KaratsubaMultiplier().Multiply(a, b);
         return new SimpleMultiplier().Multiply(a, b);
     }
