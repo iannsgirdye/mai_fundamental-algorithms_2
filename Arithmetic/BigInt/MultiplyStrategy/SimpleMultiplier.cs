@@ -1,33 +1,40 @@
 ﻿using System.Drawing;
+using System.Runtime.InteropServices.Marshalling;
 using Arithmetic.BigInt.Interfaces;
 
 namespace Arithmetic.BigInt.MultiplyStrategy;
 
 internal class SimpleMultiplier : IMultiplier
 {
+    private const int DigitBitsCount = sizeof(uint) * 8;
+    private const int DigitHalfBitsCount = DigitBitsCount / 2;
+    private const uint RightHalfMask = (1 << DigitHalfBitsCount) - 1;
+
     public BetterBigInteger Multiply(BetterBigInteger a, BetterBigInteger b)
     {
         var digitsA = a.GetDigits();
         var digitsB = b.GetDigits();
-        var result = new uint[digitsA.Length + digitsB.Length];
-        for (int i = 0; i < digitsB.Length; i++)
+        var result = new BetterBigInteger([0], a.IsNegative ^ b.IsNegative);
+        for (int i = 0; i < digitsA.Length; i++)
         {
-            ulong carry = 0;
-            for (int j = 0; j < digitsA.Length; j++)
+            for (int j = 0; j < digitsB.Length; j++)
             {
-                ulong product = (ulong)digitsA[i] * (ulong)digitsB[j] + (ulong)result[i + j] + carry;
-                result[i + j] = (uint)product;
-                carry = product >> BetterBigInteger.SystemBase;
-            }
-            for (int k = i + digitsA.Length; carry > 0; k++)
-            {
-                ulong sum = (ulong)result[k] + carry;
-                result[k] = (uint)sum;
-                carry = sum >> BetterBigInteger.SystemBase;
+                uint digitsARightHalf = digitsA[i] & RightHalfMask;
+                uint digitsALeftHalf = digitsA[i] >> DigitHalfBitsCount;
+                uint digitsBRightHalf = digitsB[j] & RightHalfMask;
+                uint digitsBLeftHalf = digitsB[j] >> DigitHalfBitsCount;
+
+                var rightAStarRightB = new BetterBigInteger([digitsARightHalf * digitsBRightHalf]);
+                var rightAStarLeftB = new BetterBigInteger([digitsARightHalf * digitsBLeftHalf]) << DigitHalfBitsCount;
+                var leftAStarRightB = new BetterBigInteger([digitsALeftHalf * digitsBRightHalf]) << DigitHalfBitsCount;
+                var leftAStarLeftB = new BetterBigInteger([digitsALeftHalf * digitsBLeftHalf]) << DigitBitsCount;
+
+                var multiply = leftAStarLeftB + leftAStarRightB + rightAStarLeftB + rightAStarRightB;
+                multiply <<= (i + j) * DigitBitsCount;
+                result += multiply;
+
             }
         }
-        var trimmedResult = BetterBigInteger.TrimLeadingZeros(result);
-        bool negative = a.IsNegative ^ b.IsNegative;
-        return new BetterBigInteger(trimmedResult, negative);
+        return result;
     }
 }
