@@ -5,6 +5,7 @@ using System.Formats.Asn1;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 using Arithmetic.BigInt.Interfaces;
 using Arithmetic.BigInt.MultiplyStrategy;
 
@@ -286,19 +287,32 @@ public sealed class BetterBigInteger : IBigInteger
     {
         var digitsA = a.GetDigits();
         var digitsB = b.GetDigits();
-        int maxLen = Math.Max(digitsA.Length, digitsB.Length);
-        var result = new uint[maxLen + 1];
-        ulong carry = 0;
-        for (int i = 0; i < maxLen; i++)
-        {
-            ulong digitA = i < digitsA.Length ? digitsA[i] : 0;
-            ulong digitB = i < digitsB.Length ? digitsB[i] : 0;
-            ulong digitSum = digitA + digitB + carry;
-            result[i] = (uint)digitSum;
-            carry = digitSum >> SystemBase;
-        }
-        result[maxLen] = (uint)carry;
+        int resultLen = Math.Max(digitsA.Length, digitsB.Length);
+        var result = new uint[resultLen + 1];
+        uint carry = 0;
 
+        for (int i = 0; i < resultLen; i++)
+        {
+            uint digitA = i < digitsA.Length ? digitsA[i] : 0;
+            uint digitB = i < digitsB.Length ? digitsB[i] : 0;
+
+            uint digitARightHalf = digitA & RightHalfMask;
+            uint digitALeftHalf = digitA >> DigitHalfBitsCount;
+            uint digitBRightHalf = digitB & RightHalfMask;
+            uint digitBLeftHalf = digitB >> DigitHalfBitsCount;
+
+            uint sumRightHalfs = digitARightHalf + digitBRightHalf + carry;
+            uint rightResult = sumRightHalfs & RightHalfMask;
+            uint rightCarry = sumRightHalfs >> DigitHalfBitsCount;
+
+            uint sumLeftHalfs = digitALeftHalf + digitBLeftHalf + rightCarry;
+            uint leftResult = sumLeftHalfs & RightHalfMask;
+            carry = sumLeftHalfs >> DigitHalfBitsCount;
+
+            result[i] = (leftResult << DigitHalfBitsCount) + rightResult;
+        }
+
+        result[resultLen] = carry;
         return TrimLeadingZeros(result);
     }
 
