@@ -15,15 +15,15 @@ internal class SimpleMultiplier : IMultiplier
         {
             for (int j = 0; j < digitsB.Length; j++)
             {
-                uint digitsARightHalf = digitsA[i] & BetterBigInteger.RightHalfMask;
-                uint digitsALeftHalf = digitsA[i] >> BetterBigInteger.DigitHalfBitsCount;
-                uint digitsBRightHalf = digitsB[j] & BetterBigInteger.RightHalfMask;
-                uint digitsBLeftHalf = digitsB[j] >> BetterBigInteger.DigitHalfBitsCount;
+                uint digitARightHalf = digitsA[i] & BetterBigInteger.RightHalfMask;
+                uint digitALeftHalf = digitsA[i] >> BetterBigInteger.DigitHalfBitsCount;
+                uint digitBRightHalf = digitsB[j] & BetterBigInteger.RightHalfMask;
+                uint digitBLeftHalf = digitsB[j] >> BetterBigInteger.DigitHalfBitsCount;
 
-                var rightAStarRightB = new BetterBigInteger([digitsARightHalf * digitsBRightHalf]);
-                var rightAStarLeftB = new BetterBigInteger([digitsARightHalf * digitsBLeftHalf]) << BetterBigInteger.DigitHalfBitsCount;
-                var leftAStarRightB = new BetterBigInteger([digitsALeftHalf * digitsBRightHalf]) << BetterBigInteger.DigitHalfBitsCount;
-                var leftAStarLeftB = new BetterBigInteger([digitsALeftHalf * digitsBLeftHalf]) << BetterBigInteger.DigitBitsCount;
+                var rightAStarRightB = new BetterBigInteger([digitARightHalf * digitBRightHalf]);
+                var rightAStarLeftB = new BetterBigInteger([digitARightHalf * digitBLeftHalf]) << BetterBigInteger.DigitHalfBitsCount;
+                var leftAStarRightB = new BetterBigInteger([digitALeftHalf * digitBRightHalf]) << BetterBigInteger.DigitHalfBitsCount;
+                var leftAStarLeftB = new BetterBigInteger([digitALeftHalf * digitBLeftHalf]) << BetterBigInteger.DigitBitsCount;
 
                 var multiply = leftAStarLeftB + leftAStarRightB + rightAStarLeftB + rightAStarRightB;
                 multiply <<= (i + j) * BetterBigInteger.DigitBitsCount;
