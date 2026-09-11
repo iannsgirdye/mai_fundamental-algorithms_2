@@ -6,10 +6,6 @@ namespace Arithmetic.BigInt.MultiplyStrategy;
 
 internal class SimpleMultiplier : IMultiplier
 {
-    private const int DigitBitsCount = sizeof(uint) * 8;
-    private const int DigitHalfBitsCount = DigitBitsCount / 2;
-    private const uint RightHalfMask = (1 << DigitHalfBitsCount) - 1;
-
     public BetterBigInteger Multiply(BetterBigInteger a, BetterBigInteger b)
     {
         var digitsA = a.GetDigits();
@@ -19,18 +15,18 @@ internal class SimpleMultiplier : IMultiplier
         {
             for (int j = 0; j < digitsB.Length; j++)
             {
-                uint digitsARightHalf = digitsA[i] & RightHalfMask;
-                uint digitsALeftHalf = digitsA[i] >> DigitHalfBitsCount;
-                uint digitsBRightHalf = digitsB[j] & RightHalfMask;
-                uint digitsBLeftHalf = digitsB[j] >> DigitHalfBitsCount;
+                uint digitsARightHalf = digitsA[i] & BetterBigInteger.RightHalfMask;
+                uint digitsALeftHalf = digitsA[i] >> BetterBigInteger.DigitHalfBitsCount;
+                uint digitsBRightHalf = digitsB[j] & BetterBigInteger.RightHalfMask;
+                uint digitsBLeftHalf = digitsB[j] >> BetterBigInteger.DigitHalfBitsCount;
 
                 var rightAStarRightB = new BetterBigInteger([digitsARightHalf * digitsBRightHalf]);
-                var rightAStarLeftB = new BetterBigInteger([digitsARightHalf * digitsBLeftHalf]) << DigitHalfBitsCount;
-                var leftAStarRightB = new BetterBigInteger([digitsALeftHalf * digitsBRightHalf]) << DigitHalfBitsCount;
-                var leftAStarLeftB = new BetterBigInteger([digitsALeftHalf * digitsBLeftHalf]) << DigitBitsCount;
+                var rightAStarLeftB = new BetterBigInteger([digitsARightHalf * digitsBLeftHalf]) << BetterBigInteger.DigitHalfBitsCount;
+                var leftAStarRightB = new BetterBigInteger([digitsALeftHalf * digitsBRightHalf]) << BetterBigInteger.DigitHalfBitsCount;
+                var leftAStarLeftB = new BetterBigInteger([digitsALeftHalf * digitsBLeftHalf]) << BetterBigInteger.DigitBitsCount;
 
                 var multiply = leftAStarLeftB + leftAStarRightB + rightAStarLeftB + rightAStarRightB;
-                multiply <<= (i + j) * DigitBitsCount;
+                multiply <<= (i + j) * BetterBigInteger.DigitBitsCount;
                 result += multiply;
 
             }

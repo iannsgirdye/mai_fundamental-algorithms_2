@@ -22,6 +22,9 @@ public sealed class BetterBigInteger : IBigInteger
     internal bool IsZero => (_data == null && _smallValue == 0) ||
                             (_data != null && _data.Length == 1 && _data[0] == 0);
 
+    public const int DigitBitsCount = sizeof(uint) * 8;
+    public const int DigitHalfBitsCount = DigitBitsCount / 2;
+    public const uint RightHalfMask = (1 << DigitHalfBitsCount) - 1;
     public const int SystemBase = sizeof(uint) * 8;
 
     private const int KaratsubaStart = 32;
