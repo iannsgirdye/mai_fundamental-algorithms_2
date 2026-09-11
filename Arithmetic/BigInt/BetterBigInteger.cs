@@ -320,21 +320,17 @@ public sealed class BetterBigInteger : IBigInteger
     {
         var digitsBigger = bigger.GetDigits();
         var digitsSmaller = smaller.GetDigits();
-        int maxLen = Math.Max(digitsBigger.Length, digitsSmaller.Length);
-        var result = new uint[maxLen];
-        long borrow = 0;
-        for (int i = 0; i < maxLen; i++)
+        int resultLen = Math.Max(digitsBigger.Length, digitsSmaller.Length);
+        var result = new uint[resultLen];
+        uint borrow = 0;
+        for (int i = 0; i < resultLen; i++)
         {
-            long digitBigger = i < digitsBigger.Length ? digitsBigger[i] : 0;
-            long digitSmaller = i < digitsSmaller.Length ? digitsSmaller[i] : 0;
-            long digitDiff = digitBigger - digitSmaller - borrow;
-            if (digitDiff < 0)
-            {
-                digitDiff += 1L << SystemBase;
-                borrow = 1;
-            }
-            else
-                borrow = 0;
+            uint digitBigger = digitsBigger[i];
+            uint digitSmaller = i < digitsSmaller.Length ? digitsSmaller[i] : 0;
+
+            uint digitDiff = digitBigger - digitSmaller - borrow;
+            borrow = (digitBigger < digitSmaller || (borrow == 1 && digitBigger == digitSmaller)) ? 1u : 0u;
+
             result[i] = (uint)digitDiff;
         }
         return TrimLeadingZeros(result);
